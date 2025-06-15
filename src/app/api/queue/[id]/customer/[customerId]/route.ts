@@ -3,8 +3,8 @@ import { queueStore } from "@/lib/queueStore";
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: Record<string, string> }
-): Promise<NextResponse> {
+  context: { params: { id: string; customerId: string } }
+) {
   const { id, customerId } = context.params;
 
   try {
@@ -15,6 +15,9 @@ export async function DELETE(
     if (error instanceof Error && error.message === "Queue not found") {
       return NextResponse.json({ error: "Queue not found" }, { status: 404 });
     }
-    return NextResponse.json({ error: "Failed to remove customer" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to remove customer" },
+      { status: 500 }
+    );
   }
 }
