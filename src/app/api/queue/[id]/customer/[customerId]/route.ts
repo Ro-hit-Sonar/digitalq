@@ -1,19 +1,26 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { queueStore } from "@/lib/queueStore";
+
+type RouteContext = {
+  params: {
+    id: string;
+    customerId: string;
+  };
+};
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string; customerId: string } }
-) {
+  context: RouteContext
+): Promise<Response> {
   try {
     queueStore.removeCustomer(context.params.id, context.params.customerId);
-    return NextResponse.json({ success: true });
+    return Response.json({ success: true });
   } catch (error) {
     console.error("Error removing customer:", error);
     if (error instanceof Error && error.message === "Queue not found") {
-      return NextResponse.json({ error: "Queue not found" }, { status: 404 });
+      return Response.json({ error: "Queue not found" }, { status: 404 });
     }
-    return NextResponse.json(
+    return Response.json(
       { error: "Failed to remove customer" },
       { status: 500 }
     );
