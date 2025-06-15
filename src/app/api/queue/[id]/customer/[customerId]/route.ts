@@ -3,10 +3,10 @@ import { queueStore } from "@/lib/queueStore";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; customerId: string } }
+  context: { params: { id: string; customerId: string } }
 ) {
   try {
-    queueStore.removeCustomer(params.id, params.customerId);
+    queueStore.removeCustomer(context.params.id, context.params.customerId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error removing customer:", error);
