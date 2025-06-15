@@ -1,19 +1,12 @@
 import { NextRequest } from "next/server";
 import { queueStore } from "@/lib/queueStore";
 
-type RouteContext = {
-  params: {
-    id: string;
-    customerId: string;
-  };
-};
-
 export async function DELETE(
   request: NextRequest,
-  context: RouteContext
+  { params }: { params: { id: string; customerId: string } }
 ): Promise<Response> {
   try {
-    queueStore.removeCustomer(context.params.id, context.params.customerId);
+    queueStore.removeCustomer(params.id, params.customerId);
     return Response.json({ success: true });
   } catch (error) {
     console.error("Error removing customer:", error);
