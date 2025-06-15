@@ -1,5 +1,5 @@
 // Mock queue data
-let queues: {
+const queues: {
   [key: string]: { id: string; name: string; customers: Customer[] };
 } = {};
 

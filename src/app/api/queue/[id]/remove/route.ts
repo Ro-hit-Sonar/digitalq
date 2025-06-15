@@ -15,17 +15,16 @@ export async function DELETE(
       );
     }
 
-    const success = queueStore.removeCustomer(params.id, customerId);
-
-    if (!success) {
-      return NextResponse.json(
-        { error: "Customer not found" },
-        { status: 404 }
-      );
-    }
-
+    queueStore.removeCustomer(params.id, customerId);
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    console.error("Error removing customer:", error);
+    if (error instanceof Error && error.message === "Queue not found") {
+      return NextResponse.json({ error: "Queue not found" }, { status: 404 });
+    }
+    return NextResponse.json(
+      { error: "Failed to remove customer" },
+      { status: 500 }
+    );
   }
 }
