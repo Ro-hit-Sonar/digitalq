@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { queueStore } from "@/lib/queueStore";
 
 export async function DELETE(
-  request: Request,
-  context: { params: { id: string; customerId: string } }
+  request: NextRequest,
+  { params }: { params: { id: string; customerId: string } }
 ) {
   try {
-    queueStore.removeCustomer(context.params.id, context.params.customerId);
+    queueStore.removeCustomer(params.id, params.customerId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error removing customer:", error);
